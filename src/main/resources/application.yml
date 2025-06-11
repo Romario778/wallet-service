@@ -1,0 +1,32 @@
+server:
+  port: ${APPLICATION_PORT:8089}
+  servlet:
+    context-path: ${CONTEXT_APPLICATION:/api/v1/}
+
+spring:
+  application:
+    name: wallet-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5439}/${DB_NAME:wallet_db}
+    username: ${DB_LOGIN:user}
+    password: ${DB_PASSWORD:password}
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      fail-on-empty-beans: false
+
+  liquibase:
+    enabled: ${MIGRATION_ENABLED:true}
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+    user: ${DB_LOGIN:user}
+    password: ${DB_PASSWORD:password}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5439}/${DB_NAME:wallet_db}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

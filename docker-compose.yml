@@ -1,0 +1,17 @@
+version: '3.9'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+
+  postgresql:
+    image: bitnami/postgresql
+    container_name: wallet_db_postgres
+    ports:
+      - "5439:5432"
+    environment:
+      POSTGRESQL_USERNAME: user
+      POSTGRESQL_PASSWORD: password
+      POSTGRESQL_DATABASE: wallet_db
