@@ -5,9 +5,8 @@ networks:
     driver: bridge
 
 services:
-
   postgresql:
-    image: bitnami/postgresql
+    image: bitnami/postgresql:15
     container_name: wallet_db_postgres
     ports:
       - "5439:5432"
@@ -15,3 +14,36 @@ services:
       POSTGRESQL_USERNAME: user
       POSTGRESQL_PASSWORD: password
       POSTGRESQL_DATABASE: wallet_db
+    volumes:
+      - postgres_data:/bitnami/postgresql
+    networks:
+      - app-tier
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d wallet_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  wallet-service:
+    build: .
+    container_name: wallet_service
+    ports:
+      - "8089:8089"
+    environment:
+      - DB_HOST=postgresql
+      - DB_PORT=5432
+      - DB_NAME=wallet_db
+      - DB_LOGIN=user
+      - DB_PASSWORD=password
+      - APPLICATION_PORT=8089
+      - CONTEXT_APPLICATION=/api/v1/
+      - SPRING_PROFILES_ACTIVE=default
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    networks:
+      - app-tier
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
