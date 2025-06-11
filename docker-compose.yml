@@ -14,6 +14,9 @@ services:
       POSTGRESQL_USERNAME: user
       POSTGRESQL_PASSWORD: password
       POSTGRESQL_DATABASE: wallet_db
+      POSTGRESQL_MAX_CONNECTIONS: 200
+      SHARED_BUFFERS: 2GB
+      WORK_MEM: 64MB
     volumes:
       - postgres_data:/bitnami/postgresql
     networks:

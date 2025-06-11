@@ -1,6 +1,7 @@
 package com.example.walletservice.model;
 
 import com.example.walletservice.model.enums.OperationType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,6 +20,7 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.UUID;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "wallet_transaction")
 @Getter

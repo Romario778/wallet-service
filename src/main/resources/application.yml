@@ -7,8 +7,10 @@ spring:
     username: ${DB_LOGIN:user}
     password: ${DB_PASSWORD:password}
     hikari:
+      maximum-pool-size: 100
+      minimum-idle: 20
       connection-timeout: 30000
-      initialization-fail-timeout: 0
+      leak-detection-threshold: 5000
 
   jackson:
     default-property-inclusion: non_null
@@ -30,9 +32,20 @@ spring:
       hibernate:
         format_sql: true
         jdbc:
-          batch_size: 20
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=10000,expireAfterWrite=60s
 
 server:
+  tomcat:
+    threads:
+      max: 500
+    accept-count: 100
   port: ${APPLICATION_PORT:8089}
   servlet:
     context-path: ${CONTEXT_APPLICATION:/api/v1}
