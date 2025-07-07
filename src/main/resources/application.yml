@@ -3,12 +3,12 @@ spring:
     name: wallet-service
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_HOST:postgresql}:${DB_PORT:5432}/${DB_NAME:wallet_db}
+    url: jdbc:postgresql://${DB_HOST:postgresql}:${DB_PORT:5432}/${DB_NAME:wallet_db}?rewriteBatchedInserts=true
     username: ${DB_LOGIN:user}
     password: ${DB_PASSWORD:password}
     hikari:
       maximum-pool-size: 100
-      minimum-idle: 20
+      minimum-idle: 50
       connection-timeout: 30000
       leak-detection-threshold: 5000
 
@@ -45,7 +45,7 @@ server:
   tomcat:
     threads:
       max: 500
-    accept-count: 100
+    accept-count: 50
   port: ${APPLICATION_PORT:8089}
   servlet:
     context-path: ${CONTEXT_APPLICATION:/api/v1}
